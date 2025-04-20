@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bi' Kahve?</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #fff0f5;
+      text-align: center;
+      padding: 50px;
+      overflow: hidden;
+    }
+    h1 {
+      color: #d63384;
+      font-size: 28px;
+    }
+    .button-container {
+      position: relative;
+      height: 200px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin: 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    #evet {
+      background-color: #28a745;
+      color: white;
+    }
+    #hayir {
+      background-color: #dc3545;
+      color: white;
+      position: absolute;
+    }
+    #cevap {
+      font-size: 22px;
+      color: #ff1493;
+      margin-top: 30px;
+      font-weight: bold;
+    }
+
+    .heart {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      transform: rotate(45deg);
+      animation: floatUp 3s ease-out forwards;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-300px) scale(1.5);
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Bi' Kahve?</h1>
+  <div class="button-container">
+    <button id="evet">Evet</button>
+    <button id="hayir">Hayır</button>
+  </div>
+  <p id="cevap"></p>
+
+  <!-- Confetti Kütüphanesi -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    const hayir = document.getElementById("hayir");
+    const evet = document.getElementById("evet");
+    const cevap = document.getElementById("cevap");
+    const container = document.querySelector(".button-container");
+
+    function rastgeleYerDegistir() {
+      const maxX = container.offsetWidth - hayir.offsetWidth;
+      const maxY = container.offsetHeight - hayir.offsetHeight;
+      const randomX = Math.floor(Math.random() * maxX);
+      const randomY = Math.floor(Math.random() * maxY);
+      hayir.style.left = `${randomX}px`;
+      hayir.style.top = `${randomY}px`;
+    }
+
+    hayir.addEventListener("mouseover", rastgeleYerDegistir);
+    hayir.addEventListener("touchstart", rastgeleYerDegistir);
+
+    evet.addEventListener("click", () => {
+      cevap.innerText = "Kabul edeceğini biliyordum :)";
+      konfetiYagdir();
+      kalplerUcur();
+    });
+
+    function konfetiYagdir() {
+      confetti({
+        particleCount: 200,
+        spread: 100,
+        origin: { y: 0.6 }
+      });
+    }
+
+    function kalplerUcur() {
+      for (let i = 0; i < 15; i++) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.top = Math.random() * 100 + "vh";
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, 3000);
+      }
+    }
+  </script>
+</body>
+</html>
